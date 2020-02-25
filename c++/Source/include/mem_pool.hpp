@@ -56,7 +56,7 @@
 #endif
 #endif
 #include <list>
-#include "FreeRTOS.h"
+#include "freertos/FreeRTOS.h"
 #include "mutex.hpp"
 
 namespace cpp_freertos {

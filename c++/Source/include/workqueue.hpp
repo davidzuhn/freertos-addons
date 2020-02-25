@@ -36,6 +36,13 @@
  *
  ***************************************************************************/
 
+/**
+ * @note This class has been edited to use the xCreateTaskPinnedToCore wrapper
+ * from the ESP-IDF to make this library compatible with the ESP32 mcu. All relevant 
+ * constructors now have the additional field for a coreID to be passed in.
+ * 
+ * updated by: Ethan Gibson
+ */
 
 #ifndef WORK_QUEUE_HPP_
 #define WORK_QUEUE_HPP_
@@ -145,7 +152,8 @@ class WorkQueue {
         WorkQueue(  const char * const Name,
                     uint16_t StackDepth = DEFAULT_WORK_QUEUE_STACK_SIZE,
                     UBaseType_t Priority = DEFAULT_WORK_QUEUE_PRIORITY,
-                    UBaseType_t MaxWorkItems = DEFAULT_MAX_WORK_ITEMS);
+                    UBaseType_t MaxWorkItems = DEFAULT_MAX_WORK_ITEMS,
+                    const uint8_t CoreID = 1);
 
         /**
          *  Constructor to create an unnamed WorkQueue.
@@ -158,7 +166,8 @@ class WorkQueue {
          */
         WorkQueue(  uint16_t StackDepth = DEFAULT_WORK_QUEUE_STACK_SIZE,
                     UBaseType_t Priority = DEFAULT_WORK_QUEUE_PRIORITY,
-                    UBaseType_t MaxWorkItems = DEFAULT_MAX_WORK_ITEMS);
+                    UBaseType_t MaxWorkItems = DEFAULT_MAX_WORK_ITEMS,
+                    const uint8_t CoreID = 1);
 
 #if (INCLUDE_vTaskDelete == 1)
         /**
@@ -209,10 +218,12 @@ class WorkQueue {
                 CWorkerThread(  const char * const Name,
                                 uint16_t StackDepth,
                                 UBaseType_t Priority,
+                                const uint8_t CoreID,
                                 WorkQueue *Parent);
 
                 CWorkerThread(  uint16_t StackDepth,
                                 UBaseType_t Priority,
+                                const uint8_t CoreID,
                                 WorkQueue *Parent);
 
                 virtual ~CWorkerThread();

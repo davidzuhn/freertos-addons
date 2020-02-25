@@ -55,8 +55,8 @@
 #error "FreeRTOS-Addons require C++ Strings if you are using exceptions"
 #endif
 #endif
-#include "FreeRTOS.h"
-#include "queue.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
 
 
 namespace cpp_freertos {

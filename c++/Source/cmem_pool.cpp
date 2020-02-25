@@ -41,7 +41,7 @@
 
 #include <stdlib.h>
 #include "mem_pool.hpp"
-
+#include "esp-idf-cfg.h"
 
 using namespace cpp_freertos;
 

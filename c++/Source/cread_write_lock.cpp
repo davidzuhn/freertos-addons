@@ -38,7 +38,7 @@
 
 
 #include "read_write_lock.hpp"
-
+#include "esp-idf-cfg.h"
 
 using namespace cpp_freertos;
 

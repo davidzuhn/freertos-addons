@@ -38,8 +38,8 @@
 
 
 #include <stdlib.h>
-#include "FreeRTOS.h"
-#include "queue.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
 #include "mem_pool.h"
 #include "zero_copy_queue.h"
 

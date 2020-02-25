@@ -38,8 +38,8 @@
 
 
 #include <stdlib.h>
-#include "FreeRTOS.h"
-#include "semphr.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
 #include "read_write_lock.h"
 
 

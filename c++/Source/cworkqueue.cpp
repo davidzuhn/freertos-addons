@@ -63,7 +63,8 @@ bool WorkItem::FreeAfterRun()
 WorkQueue::WorkQueue(   const char * const Name,
                         uint16_t StackDepth,
                         UBaseType_t Priority,
-                        UBaseType_t maxWorkItems)
+                        UBaseType_t maxWorkItems,
+                        const uint8_t CoreID)
 {
     //
     //  Build the Queue first, since the Thread is going to access 
@@ -71,7 +72,7 @@ WorkQueue::WorkQueue(   const char * const Name,
     //
     WorkItemQueue = new Queue(maxWorkItems, sizeof(WorkItem *));
     ThreadComplete = new BinarySemaphore();
-    WorkerThread = new CWorkerThread(Name, StackDepth, Priority, this);
+    WorkerThread = new CWorkerThread(Name, StackDepth, Priority, CoreID, this);
     //
     //  Our ctor chain is complete, we can start.
     //
@@ -81,7 +82,8 @@ WorkQueue::WorkQueue(   const char * const Name,
 
 WorkQueue::WorkQueue(   uint16_t StackDepth,
                         UBaseType_t Priority,
-                        UBaseType_t maxWorkItems)
+                        UBaseType_t maxWorkItems,
+                        const uint8_t CoreID)
 {
     //
     //  Build the Queue first, since the Thread is going to access 
@@ -89,7 +91,7 @@ WorkQueue::WorkQueue(   uint16_t StackDepth,
     //
     WorkItemQueue = new Queue(maxWorkItems, sizeof(WorkItem *));
     ThreadComplete = new BinarySemaphore();
-    WorkerThread = new CWorkerThread(StackDepth, Priority, this);
+    WorkerThread = new CWorkerThread(StackDepth, Priority, CoreID, this);
     //
     //  Our ctor chain is complete, we can start.
     //
@@ -143,16 +145,18 @@ bool WorkQueue::QueueWork(WorkItem *work)
 WorkQueue::CWorkerThread::CWorkerThread(const char * const Name,
                                         uint16_t StackDepth,
                                         UBaseType_t Priority,
+                                        const uint8_t CoreID,
                                         WorkQueue *Parent)
-    : Thread(Name, StackDepth, Priority), ParentWorkQueue(Parent)
+    : Thread(Name, StackDepth, Priority, CoreID), ParentWorkQueue(Parent)
 {
 }
 
 
 WorkQueue::CWorkerThread::CWorkerThread(uint16_t StackDepth,
                                         UBaseType_t Priority,
+                                        const uint8_t CoreID,
                                         WorkQueue *Parent)
-    : Thread(StackDepth, Priority), ParentWorkQueue(Parent)
+    : Thread(StackDepth, Priority, CoreID), ParentWorkQueue(Parent)
 {
 }
 

@@ -55,11 +55,13 @@ MutexStandard Thread::StartGuardLock;
 
 Thread::Thread( const std::string pcName,
                 uint16_t usStackDepth,
-                UBaseType_t uxPriority)
+                UBaseType_t uxPriority,
+                const uint8_t coreID)
     :   Name(pcName), 
         StackDepth(usStackDepth), 
         Priority(uxPriority),
-        ThreadStarted(false)
+        ThreadStarted(false),
+        CoreID(coreID)
 {
 #if (INCLUDE_vTaskDelayUntil == 1)
     delayUntilInitialized = false;
@@ -68,11 +70,13 @@ Thread::Thread( const std::string pcName,
 
 
 Thread::Thread( uint16_t usStackDepth,
-                UBaseType_t uxPriority)
+                UBaseType_t uxPriority,
+                const uint8_t coreID)
     :   Name("Default"), 
         StackDepth(usStackDepth), 
         Priority(uxPriority),
-        ThreadStarted(false)
+        ThreadStarted(false),
+        CoreID(coreID)
 {
 #if (INCLUDE_vTaskDelayUntil == 1)
     delayUntilInitialized = false;
@@ -86,10 +90,12 @@ Thread::Thread( uint16_t usStackDepth,
 
 Thread::Thread( const char *pcName,
                 uint16_t usStackDepth,
-                UBaseType_t uxPriority)
+                UBaseType_t uxPriority,
+                const uint8_t coreID)
     :   StackDepth(usStackDepth),
         Priority(uxPriority),
-        ThreadStarted(false)
+        ThreadStarted(false),
+        CoreID(coreID)
 {
     for (int i = 0; i < configMAX_TASK_NAME_LEN - 1; i++) {
         Name[i] = *pcName;
@@ -106,10 +112,12 @@ Thread::Thread( const char *pcName,
 
 
 Thread::Thread( uint16_t usStackDepth,
-                UBaseType_t uxPriority)
+                UBaseType_t uxPriority,
+                const uint8_t coreID)
     :   StackDepth(usStackDepth),
         Priority(uxPriority),
-        ThreadStarted(false)
+        ThreadStarted(false),
+        CoreID(coreID)
 {
     memset(Name, 0, sizeof(Name));
 #if (INCLUDE_vTaskDelayUntil == 1)
@@ -151,20 +159,22 @@ bool Thread::Start()
 
 #ifndef CPP_FREERTOS_NO_CPP_STRINGS
 
-    BaseType_t rc = xTaskCreate(TaskFunctionAdapter,
+    BaseType_t rc = xTaskCreatePinnedToCore(TaskFunctionAdapter,
                                 Name.c_str(),
                                 StackDepth,
                                 this,
                                 Priority,
-                                &handle);
+                                &handle,
+                                CoreID);
 #else 
 
-    BaseType_t rc = xTaskCreate(TaskFunctionAdapter,
+    BaseType_t rc = xTaskCreatePinnedToCore(TaskFunctionAdapter,
                                 Name,
                                 StackDepth,
                                 this,
                                 Priority,
-                                &handle);
+                                &handle,
+                                CoreID);
 #endif
 
     return rc != pdPASS ? false : true;

@@ -40,8 +40,8 @@
 #ifndef CRITICAL_HPP_
 #define CRITICAL_HPP_
 
-#include "FreeRTOS.h"
-#include "task.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 
 namespace cpp_freertos {

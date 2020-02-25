@@ -45,6 +45,7 @@
  *  it's a fatal error. In the cases when you've defined this, the new
  *  default behavior will be to issue a configASSERT() instead.
  */
+#include "esp-idf-cfg.h"
 #ifndef CPP_FREERTOS_NO_EXCEPTIONS
 #include <exception>
 #include <string>
@@ -53,8 +54,8 @@
 #error "FreeRTOS-Addons require C++ Strings if you are using exceptions"
 #endif
 #endif
-#include "FreeRTOS.h"
-#include "event_groups.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/event_groups.h"
 
 
 namespace cpp_freertos {
